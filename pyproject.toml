@@ -1,0 +1,36 @@
+[project]
+# The installable package name for this application
+name = "voyagr"
+
+# Early project version; we will evolve this later
+version = "0.1.0"
+
+# Short description of what this project does
+description = "AI-powered personalized travel itinerary planner"
+
+# Main project documentation file
+readme = "ARCHITECTURE.md"
+
+# We are deliberately targeting Python 3.12 for ecosystem stability
+requires-python = ">=3.12,<3.13"
+
+# Runtime dependencies required by the app itself
+dependencies = [
+    "fastapi>=0.115.0,<1.0.0",
+    "langchain>=0.3.27,<0.4.0",
+    "langchain-core>=0.3.75,<0.4.0",
+    "pydantic-settings>=2.10.0,<3.0.0",
+    "uvicorn[standard]>=0.35.0,<1.0.0",
+    "langchain-groq>=0.2.0,<1.0.0",
+]
+
+
+[build-system]
+# The build backend package needed to build/install this project
+requires = ["hatchling>=1.27.0"]
+
+# Tells packaging tools which backend should build the project
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
