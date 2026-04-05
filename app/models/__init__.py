@@ -1,3 +1,3 @@
-from app.models.llm import get_chat_model
+from app.models.llm import get_chat_model, get_structured_chat_model
 
-__all__ = ["get_chat_model"]
+__all__ = ["get_chat_model", "get_structured_chat_model"]

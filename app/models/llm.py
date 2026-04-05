@@ -1,6 +1,8 @@
 from functools import lru_cache
+from typing import Type
 
 from langchain_groq import ChatGroq
+from pydantic import BaseModel
 
 from app.config import get_settings
 
@@ -20,3 +22,7 @@ def get_chat_model(
         temperature=temperature,
         api_key=settings.groq_api_key,
     )
+
+
+def get_structured_chat_model(schema: Type[BaseModel]):
+    return get_chat_model().with_structured_output(schema)
