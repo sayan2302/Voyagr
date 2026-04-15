@@ -33,6 +33,8 @@ class Settings(BaseSettings):
 
     # Primary LLM provider key for early Voyagr examples
     groq_api_key: str | None = Field(default=None, validation_alias="GROQ_API_KEY")
+    # Tavily API key for destination/activity discovery
+    tavily_api_key: str | None = Field(default=None, validation_alias="TAVILY_API_KEY")
 
 
 @lru_cache

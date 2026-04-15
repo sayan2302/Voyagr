@@ -12,7 +12,7 @@ Currently in: **Phase 0**
 ## Phase Progress Tracker
 - [x] Phase 0: Project Setup & Architecture Mastery (10%)
 - [x] Phase 1: Deep LangChain Foundations in Context of Agents (20%)
-- [ ] Phase 2: Tool & Function Calling Mastery (15%)
+- [x] Phase 2: Tool & Function Calling Mastery (15%)
 - [ ] Phase 3: Model Context Protocol (MCP) & FastMCP (10%)
 - [ ] Phase 4: LangGraph — The Heart of the Project (30%)
 - [ ] Phase 5: Streamlit Frontend + Full Integration (10%)
@@ -48,6 +48,16 @@ Currently in: **Phase 0**
 - Memory was modeled as explicit structured state instead of vague hidden context.
 - Custom tools were introduced first as local callable capabilities before moving to real external APIs.
 - A key recurring lesson was that package-level public interfaces must stay aligned with internal implementation.
+
+### Phase 2 Completion Notes
+
+- Real external tools were introduced in layers: first weather, then discovery/places.
+- Tool outputs were normalized behind app-level schemas instead of leaking raw provider payloads into chains.
+- Tool failures were standardized with `ToolExecutionError` so workflows can handle provider issues consistently.
+- The itinerary workflow was upgraded to use multi-tool enrichment before model invocation.
+- Graceful degradation was introduced so useful planning can continue even when some external tools fail.
+- Typed success contracts plus standardized failure contracts became the shared pattern for all tools.
+- Deterministic multi-tool workflows were used as the bridge before future agentic tool selection and LangGraph orchestration.
 
 
 ### Free-Tier-First External Service Stack
@@ -95,6 +105,7 @@ voyagr/
 - A backend can look runnable as plain Python files but still fail at packaging/build time if project structure and build-tool expectations are not explicitly aligned.
 - In LangChain-style architecture, prompts, models, and chains should be treated as separate reusable layers so workflows stay composable instead of turning into scattered glue code.
 - A production-style LLM system is easier to scale when prompts, models, chains, schemas, memory, and tools are treated as separate reusable layers with stable public interfaces.
+- A strong tools layer hides provider-specific mess behind clean typed outputs and standardized failures, which makes multi-tool workflows much easier to compose and debug.
 
 
 ## Edge Cases & Considerations We Will Address
