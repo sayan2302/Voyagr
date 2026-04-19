@@ -13,7 +13,7 @@ Currently in: **Phase 0**
 - [x] Phase 0: Project Setup & Architecture Mastery (10%)
 - [x] Phase 1: Deep LangChain Foundations in Context of Agents (20%)
 - [x] Phase 2: Tool & Function Calling Mastery (15%)
-- [ ] Phase 3: Model Context Protocol (MCP) & FastMCP (10%)
+- [x] Phase 3: Model Context Protocol (MCP) & FastMCP (10%)
 - [ ] Phase 4: LangGraph — The Heart of the Project (30%)
 - [ ] Phase 5: Streamlit Frontend + Full Integration (10%)
 - [ ] Phase 6: Production Polish, Testing & Deployment (5%)
@@ -58,6 +58,19 @@ Currently in: **Phase 0**
 - Graceful degradation was introduced so useful planning can continue even when some external tools fail.
 - Typed success contracts plus standardized failure contracts became the shared pattern for all tools.
 - Deterministic multi-tool workflows were used as the bridge before future agentic tool selection and LangGraph orchestration.
+
+### Phase 3 Completion Notes
+
+- FastMCP was added as the framework for exposing MCP capabilities from Voyagr.
+- The MCP server was kept separate from FastAPI because the two servers have different roles.
+- Existing internal app capabilities were wrapped for MCP exposure instead of duplicating business logic.
+- Voyagr now exposes all three major MCP capability types:
+  - tools for actions
+  - resources for readable context
+  - prompts for reusable instruction templates
+- `ARCHITECTURE.md` was exposed as an MCP resource to demonstrate readable project context.
+- The itinerary prompt was exposed through MCP by reusing the internal prompt layer as the source of truth.
+- STDIO-mode MCP behavior was learned as a process-waiting server pattern rather than a normal HTTP startup flow.
 
 
 ### Free-Tier-First External Service Stack
@@ -106,6 +119,7 @@ voyagr/
 - In LangChain-style architecture, prompts, models, and chains should be treated as separate reusable layers so workflows stay composable instead of turning into scattered glue code.
 - A production-style LLM system is easier to scale when prompts, models, chains, schemas, memory, and tools are treated as separate reusable layers with stable public interfaces.
 - A strong tools layer hides provider-specific mess behind clean typed outputs and standardized failures, which makes multi-tool workflows much easier to compose and debug.
+- MCP becomes much more useful when internal tools, resources, and prompts are already cleanly separated, because the MCP layer can then expose them as wrappers instead of becoming a second logic layer.
 
 
 ## Edge Cases & Considerations We Will Address
