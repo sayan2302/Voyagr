@@ -1,7 +1,7 @@
 from langgraph.graph import END, START, StateGraph
 
 from app.agent.nodes import places_node, planner_node, weather_node
-from app.agent.routing import route_after_weather
+from app.agent.routing import route_after_places, route_after_weather
 from app.agent.state import VoyagrAgentState
 
 
@@ -20,7 +20,13 @@ builder.add_conditional_edges(
         "skip_places": "planner_node",
     },
 )
-builder.add_edge("places_node", "planner_node")
+builder.add_conditional_edges(
+    "places_node",
+    route_after_places,
+    {
+        "continue_to_planner": "planner_node",
+    },
+)
 builder.add_edge("planner_node", END)
 
 voyagr_graph = builder.compile()

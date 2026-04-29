@@ -28,6 +28,14 @@ class VoyagrAgentState(BaseModel):
         default=None,
         description="Final structured itinerary if generated",
     )
+    review_status: str | None = Field(
+        default=None,
+        description="Planner review result such as approved or needs_revision",
+    )
+    review_notes: list[str] = Field(
+        default_factory=list,
+        description="Review comments collected after itinerary generation",
+    )
     errors: list[str] = Field(
         default_factory=list,
         description="Collected workflow errors",
