@@ -1,7 +1,7 @@
 from app.agent.state import VoyagrAgentState
-from app.tools import get_weather_forecast, discover_places
-from app.tools.tool_exceptions import ToolExecutionError
 from app.chains import structured_itinerary_generation_chain
+from app.tools import discover_places, get_weather_forecast
+from app.tools.tool_exceptions import ToolExecutionError
 
 
 def weather_node(state: VoyagrAgentState) -> dict:
@@ -69,3 +69,28 @@ def planner_node(state: VoyagrAgentState) -> dict:
         return {"itinerary": itinerary}
     except Exception as exc:
         return {"errors": [*state.errors, f"planner_node: {exc}"]}
+
+
+def review_node(state: VoyagrAgentState) -> dict:
+    if state.itinerary is None:
+        return {
+            "review_status": "needs_revision",
+            "review_notes": [*state.review_notes, "No itinerary was generated to review."],
+        }
+
+    if len(state.itinerary.days) < state.request.trip_days:
+        return {
+            "review_status": "needs_revision",
+            "review_notes": [
+                *state.review_notes,
+                "Generated itinerary has fewer days than requested.",
+            ],
+        }
+
+    return {
+        "review_status": "approved",
+        "review_notes": [
+            *state.review_notes,
+            "Itinerary structure matches the requested trip length.",
+        ],
+    }
