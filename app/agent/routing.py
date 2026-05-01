@@ -10,3 +10,10 @@ def route_after_weather(state: VoyagrAgentState) -> str:
 
 def route_after_places(state: VoyagrAgentState) -> str:
     return "continue_to_planner"
+
+
+def route_after_review(state: VoyagrAgentState) -> str:
+    if state.review_status == "approved":
+        return "finish"
+
+    return "revise"
