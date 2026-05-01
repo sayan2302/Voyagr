@@ -14,7 +14,7 @@ Currently in: **Phase 0**
 - [x] Phase 1: Deep LangChain Foundations in Context of Agents (20%)
 - [x] Phase 2: Tool & Function Calling Mastery (15%)
 - [x] Phase 3: Model Context Protocol (MCP) & FastMCP (10%)
-- [ ] Phase 4: LangGraph — The Heart of the Project (30%)
+- [x] Phase 4: LangGraph State Machines & Workflow Orchestration (30%)
 - [ ] Phase 5: Streamlit Frontend + Full Integration (10%)
 - [ ] Phase 6: Production Polish, Testing & Deployment (5%)
 
@@ -72,6 +72,18 @@ Currently in: **Phase 0**
 - The itinerary prompt was exposed through MCP by reusing the internal prompt layer as the source of truth.
 - STDIO-mode MCP behavior was learned as a process-waiting server pattern rather than a normal HTTP startup flow.
 
+### Phase 4 Completion Notes
+
+- LangGraph was introduced as the stateful orchestration layer above tools, chains, and schemas.
+- Shared graph state was modeled explicitly with `VoyagrAgentState` instead of relying on implicit flow between steps.
+- Workflow steps were split into focused nodes that read shared state and return partial state updates.
+- Conditional routing was introduced through dedicated router functions instead of hardcoding every transition directly.
+- The graph evolved from a linear flow into a state-driven branching workflow with fallback paths.
+- A review stage was added after itinerary generation to demonstrate generate-then-evaluate workflow design.
+- A guarded revision loop was introduced using `revision_count` and `max_revisions` to avoid infinite retries.
+- Checkpointing was added with `InMemorySaver` so graph state can persist per thread during development.
+
+
 
 ### Free-Tier-First External Service Stack
 
@@ -120,6 +132,7 @@ voyagr/
 - A production-style LLM system is easier to scale when prompts, models, chains, schemas, memory, and tools are treated as separate reusable layers with stable public interfaces.
 - A strong tools layer hides provider-specific mess behind clean typed outputs and standardized failures, which makes multi-tool workflows much easier to compose and debug.
 - MCP becomes much more useful when internal tools, resources, and prompts are already cleanly separated, because the MCP layer can then expose them as wrappers instead of becoming a second logic layer.
+- LangGraph becomes much easier to reason about when nodes do focused work, routers control transitions, and the shared state explicitly represents the full workflow lifecycle.
 
 
 ## Edge Cases & Considerations We Will Address
