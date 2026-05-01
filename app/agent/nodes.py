@@ -55,6 +55,11 @@ def planner_node(state: VoyagrAgentState) -> dict:
                 f"Discovery summary: {state.places.answer or 'No summary available.'}"
             )
 
+        if state.review_notes:
+            enriched_notes.append(
+                f"Review feedback for revision: {' | '.join(state.review_notes)}"
+            )
+
         itinerary = structured_itinerary_generation_chain.invoke(
             {
                 "destination": state.request.destination,
@@ -93,4 +98,10 @@ def review_node(state: VoyagrAgentState) -> dict:
             *state.review_notes,
             "Itinerary structure matches the requested trip length.",
         ],
+    }
+
+
+def revision_node(state: VoyagrAgentState) -> dict:
+    return {
+        "revision_count": state.revision_count + 1,
     }
