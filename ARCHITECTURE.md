@@ -15,7 +15,7 @@ Currently in: **Phase 0**
 - [x] Phase 2: Tool & Function Calling Mastery (15%)
 - [x] Phase 3: Model Context Protocol (MCP) & FastMCP (10%)
 - [x] Phase 4: LangGraph State Machines & Workflow Orchestration (30%)
-- [ ] Phase 5: Streamlit Frontend + Full Integration (10%)
+- [x] Phase 5: Streamlit Frontend + Full Integration (10%)
 - [ ] Phase 6: Production Polish, Testing & Deployment (5%)
 
 ## Key Decisions & Why (Mid-Level — Update as we go)
@@ -83,6 +83,14 @@ Currently in: **Phase 0**
 - A guarded revision loop was introduced using `revision_count` and `max_revisions` to avoid infinite retries.
 - Checkpointing was added with `InMemorySaver` so graph state can persist per thread during development.
 
+### Phase 5 Completion Notes
+
+- Streamlit was added as the frontend layer for collecting trip inputs and rendering workflow results.
+- The frontend was integrated through FastAPI instead of calling LangGraph directly, preserving a clean backend boundary.
+- A dedicated itinerary API endpoint was added so the UI can submit requests and receive full graph results in one response.
+- The itinerary schema, prompt, and few-shot examples were upgraded together so the frontend could render a richer travel plan.
+- The UI was designed to expose not just the final itinerary, but also weather, places, review status, and raw workflow state.
+- Frontend and backend integration now reflects the real Voyagr architecture: Streamlit -> FastAPI -> LangGraph -> tools.
 
 
 ### Free-Tier-First External Service Stack
@@ -133,6 +141,7 @@ voyagr/
 - A strong tools layer hides provider-specific mess behind clean typed outputs and standardized failures, which makes multi-tool workflows much easier to compose and debug.
 - MCP becomes much more useful when internal tools, resources, and prompts are already cleanly separated, because the MCP layer can then expose them as wrappers instead of becoming a second logic layer.
 - LangGraph becomes much easier to reason about when nodes do focused work, routers control transitions, and the shared state explicitly represents the full workflow lifecycle.
+- Frontend quality depends heavily on backend contract quality, so richer schemas, stronger prompts, and clearer rendering often need to evolve together instead of being treated as separate layers.
 
 
 ## Edge Cases & Considerations We Will Address
