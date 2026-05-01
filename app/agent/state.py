@@ -36,6 +36,16 @@ class VoyagrAgentState(BaseModel):
         default_factory=list,
         description="Review comments collected after itinerary generation",
     )
+    revision_count: int = Field(
+        default=0,
+        ge=0,
+        description="How many revision cycles have been attempted",
+    )
+    max_revisions: int = Field(
+        default=1,
+        ge=0,
+        description="Maximum allowed revision cycles before forcing workflow completion",
+    )
     errors: list[str] = Field(
         default_factory=list,
         description="Collected workflow errors",
