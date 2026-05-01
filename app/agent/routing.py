@@ -16,4 +16,7 @@ def route_after_review(state: VoyagrAgentState) -> str:
     if state.review_status == "approved":
         return "finish"
 
+    if state.revision_count >= state.max_revisions:
+        return "finish"
+
     return "revise"
