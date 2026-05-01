@@ -1,3 +1,4 @@
+from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph import END, START, StateGraph
 
 from app.agent.nodes import (
@@ -50,4 +51,5 @@ builder.add_conditional_edges(
 )
 builder.add_edge("revision_node", "planner_node")
 
-voyagr_graph = builder.compile()
+checkpointer = InMemorySaver()
+voyagr_graph = builder.compile(checkpointer=checkpointer)
