@@ -25,4 +25,7 @@ def get_chat_model(
 
 
 def get_structured_chat_model(schema: Type[BaseModel]):
-    return get_chat_model().with_structured_output(schema)
+    return get_chat_model(
+        model_name="llama-3.3-70b-versatile",
+        temperature=0.1,
+    ).with_structured_output(schema)

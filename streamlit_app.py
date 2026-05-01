@@ -109,11 +109,58 @@ def render_itinerary(itinerary: dict[str, Any]) -> None:
     st.subheader(f"{itinerary['destination']} · {itinerary['trip_days']} days")
     st.write(itinerary["overview"])
 
+    top_col1, top_col2 = st.columns(2)
+    with top_col1:
+        st.markdown("**Budget summary**")
+        st.write(itinerary.get("budget_summary", "Not available."))
+    with top_col2:
+        st.markdown("**Pacing notes**")
+        st.write(itinerary.get("pacing_notes", "Not available."))
+
+    tips = itinerary.get("general_tips", [])
+    if tips:
+        st.markdown("**General tips**")
+        for tip in tips:
+            st.write(f"- {tip}")
+
+    def render_activity_block(title: str, activities: list[dict[str, Any]]) -> None:
+        st.markdown(f"**{title}**")
+        if not activities:
+            st.write("- No activities listed.")
+            return
+
+        for item in activities:
+            st.markdown(
+                f"- **{item['time_slot']} · {item['name']}**"
+                f"  \n  {item['details']}"
+                f"  \n  Cost: {item['estimated_cost']}"
+                f"  \n  Weather fit: {item['weather_fit']}"
+            )
+
     for day in itinerary.get("days", []):
         st.markdown('<div class="day-card">', unsafe_allow_html=True)
-        st.markdown(f"**Day {day['day']}: {day['title']}**")
-        for activity in day.get("activities", []):
-            st.write(f"- {activity}")
+        st.markdown(f"### Day {day['day']}: {day['title']}")
+        st.caption(f"Area focus: {day.get('area', 'Not specified')}")
+
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            render_activity_block("Morning", day.get("morning", []))
+        with col2:
+            render_activity_block("Afternoon", day.get("afternoon", []))
+        with col3:
+            render_activity_block("Evening", day.get("evening", []))
+
+        meta_col1, meta_col2, meta_col3 = st.columns(3)
+        with meta_col1:
+            st.markdown("**Food recommendation**")
+            st.write(day.get("food_recommendation", "Not available."))
+        with meta_col2:
+            st.markdown("**Transport tip**")
+            st.write(day.get("transport_tip", "Not available."))
+        with meta_col3:
+            st.markdown("**Daily budget estimate**")
+            st.write(day.get("daily_budget_estimate", "Not available."))
+
         st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("</div>", unsafe_allow_html=True)
